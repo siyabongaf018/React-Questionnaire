@@ -1,0 +1,41 @@
+.logo {
+    position: absolute;
+  padding: 20px;
+  top: 0;
+  left: 5rem;
+  text-align: left;
+  min-width: 100%;
+height: auto;
+}
+
+.sidebar {
+  height: 100%;
+  position: absolute;
+  /* z-index: 1; */
+  top: 100px;
+  left: 0;
+  background-color: #ffffff;
+  color: white;
+  width: 200px;
+  padding: 20px;
+  justify-content: space-evenly;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar li:hover {
+  background-color: #e0d9d9;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.Context{
+  margin-left: 200px ;
+}

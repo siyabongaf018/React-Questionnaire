@@ -1,0 +1,9 @@
+
+=>for axios and react router dom
+npm install axios json-server react-router-dom
+
+=>for server 
+npm run server
+
+=> to run the project 
+npm run dev
