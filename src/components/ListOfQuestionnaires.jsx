@@ -10,8 +10,11 @@ const ListOfQuestionnaires = ({questionnaires,onDeleteMember}) => {
     <div>
       
         <div>
-          <h2>Available Questionnaires</h2>
-          {questionnaires.map((questions, index)=>(
+
+          
+          <h2>{questionnaires.legnth === 0 && "No "} Available Questionnaires</h2>
+          { 
+          questionnaires.map((questions, index)=>(
             <Questions key= {index} questions={questions} onDeleteMember={onDeleteMember} />
           ))}
 
