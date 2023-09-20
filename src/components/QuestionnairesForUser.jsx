@@ -18,11 +18,11 @@ const QuestionnairesForUser = () => {
       setQuestionnaires(response.data);
       setQuestionnaires2(response.data);
       setResponses(questionnaire);
-      console.log("Fetched questionnaires:", questionnaire);
+     // console.log("Fetched questionnaires:", questionnaire);
 
       if (questionnaire && questionnaire.question) {
         setQuestionnaires(questionnaire.question);
-        console.log("Fetched questionnaires:", questionnaire.question);
+      //  console.log("Fetched questionnaires:", questionnaire.question);
       }
     });
   }, []);
@@ -38,13 +38,13 @@ const QuestionnairesForUser = () => {
     newData.neutral = 0;
     if (response === "agree") {
       newData.agree = 1;
-      console.log(newData.agree + " response " + response);
+      // console.log(newData.agree + " response " + response);
     } else if (response === "neutral") {
       newData.neutral = 1;
-      console.log(newData.neutral + " response " + response);
+      // console.log(newData.neutral + " response " + response);
     } else if (response === "disagree") {
       newData.disagree = 1;
-      console.log(newData.disagree + " response " + response);
+      // console.log(newData.disagree + " response " + response);
     }
 
     //assign the newdata wich is updated to the olddata.
@@ -56,9 +56,10 @@ const QuestionnairesForUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //updating the new data from the form with the precious data from the database
-    const updatedData = questionnaires.map((item) => {
-      const newItem = questionnaires2.find((newItem) => newItem.id === item.id);
+  
+    // 1. Calculate the new data for the questionnaire questions
+    const updatedData = questionnaires.map((item, index) => {
+      const newItem = questionnaires2[index]; // Use the index to access the corresponding item
       if (newItem) {
         return {
           ...item,
@@ -69,32 +70,86 @@ const QuestionnairesForUser = () => {
       }
       return item;
     });
-
+  
+    // 2. Update the local state with the new data
     setQuestionnaires(updatedData);
-    console.log(questionnaires);
-    let dataSet = [...questionnaires];
-
-    // const response = await axios.post(
-    //   "http://localhost:3000/questionnairesData",
-    //   dataSet
-    // );
-
-    // if (response.status === 201) {
-    //   navigate("/");
-    // }
-
-    // // Send a PUT request to update the data on the server
-    // axios
-    //   .put("http://localhost:3000/questionnairesData/1", dataSet)
-    //   .then((response) => {
-    //     console.log("Data updated successfully:", response.data);
-    //     // You can add any additional handling here if needed.
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error updating data:", error);
-    //     // Handle any errors that occur during the PUT request.
-    //   });
+    console.log("data",questionnaires);
+  
+    try {
+      // 3. Send PUT requests to update the database for each question
+      const promises = questionnaires.map(async (item, index) => {
+        const questionData = {
+          question: item.question,
+          agree: item.agree,
+          neutral: item.neutral,
+          disagree: item.disagree,
+        };
+  
+        // Use the item's id for the PUT request URL
+        const response = await axios.put(
+          `http://localhost:3000/questionnairesData/${item.id}`,
+          questionData
+        );
+  
+        console.log(`Question ${index} updated:`, response.data);
+  
+        // Return the response so we can wait for all requests to complete
+        return response;
+      });
+  
+      // Wait for all PUT requests to complete
+      await Promise.all(promises);
+  
+      console.log("All questions updated successfully");
+  
+      // 4. Uncomment the following line to navigate after successful submission
+      // navigate("/");
+    } catch (error) {
+      console.error("Error updating questions:", error);
+      // Handle any errors that may occur during the database update here
+    }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   //updating the new data from the form with the precious data from the database
+  //   const updatedData = questionnaires.map((item) => {
+  //     const newItem = questionnaires2.find((newItem) => newItem.id === item.id);
+  //     if (newItem) {
+  //       return {
+  //         ...item,
+  //         agree: item.agree + newItem.agree,
+  //         neutral: item.neutral + newItem.neutral,
+  //         disagree: item.disagree + newItem.disagree,
+  //       };
+  //     }
+  //     return item;
+  //   });
+
+  //   setQuestionnaires(updatedData);
+  //   console.log(questionnaires);
+  //   let dataSet = [...questionnaires];
+
+  //   // going through the useState to update the database for all the values for the quiestions
+  //   questionnaires.map(async (item, index) => {
+  //     const quiestionData = {
+  //       question: item.question,
+  //       agree: parseInt(item.agree),
+  //       neutral: parseInt(item.neutral),
+  //       disagree: parseInt(item.disagree),
+  //     };
+
+  //     const response = await axios.put(
+  //       `http://localhost:3000/questionnairesData/${index}`,
+  //       quiestionData
+  //     );
+  //     console.log(response.data);
+
+  //     if (response.status === 200) {
+  //       // navigate("/");
+  //     }
+  //   });
+  // };
 
   return (
     <div>
