@@ -34,25 +34,20 @@ const EditQuestionnaire = () => {
       disagree: parseInt(disagree),
     };
 
-
-
-
-
-
     try {
-      const response = await axios.put(`http://localhost:3000/questionnairesData`, dataSet);
+      const response = await axios.put(`http://localhost:3000/questionnairesData/${id}`, dataSet);
     console.log(response.data);
+    // alert("Blog data saved!");
     
     if (response.status === 200) {
+      // Redirect to the desired route (in this case, '/')
       navigate('/');
     }
     } catch (error) {
       console.error("Error updating response:", error);
+      //display error
     }
   };
-
-
-
 
   return (
     <div>

@@ -1,26 +1,18 @@
 {
   "questionnairesData": [
     {
-      "question": "jfgjgfj",
-      "agree": 0,
+      "question": "coding is fun ?",
+      "agree": 1,
+      "neutral": 0,
+      "disagree": 0,
+      "id": 1
+    },
+    {
+      "question": "dfadsf",
+      "agree": 1,
       "neutral": 0,
       "disagree": 0,
       "id": 2
-    },
-    {
-      "question": "3434",
-      "agree": 0,
-      "neutral": 0,
-      "disagree": 0,
-      "id": 3
-    },
-    {
-      "question": "coding is fun?",
-      "agree": 0,
-      "neutral": 0,
-      "disagree": 0,
-      "id": 4
     }
-   
   ]
 }
