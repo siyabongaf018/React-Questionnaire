@@ -20,7 +20,7 @@ const Create = () => {
     try {
       await axios.delete(`http://localhost:3000/questionnairesData/${id}`);
       setQuestionnaires((prevData) => prevData.filter((a) => a.id !== id));
-      window.alert("Record deleted");
+      // window.alert("Record deleted");
     } catch (error) {
       console.error("Error deleting article:", error);
     }
@@ -68,7 +68,10 @@ const Create = () => {
           <button  style={{border:"1px solid blue" , color:"blue"}}
             type="submit">Add</button>
         </form>
-        <ListOfQuestionnaires questionnaires={questionnaires} onDeleteMember={onDeleteMember} />
+        {questionnaires.length > 0 ? (
+          <ListOfQuestionnaires questionnaires={questionnaires} onDeleteMember={onDeleteMember} />
+        ):(<h2>No Questions</h2>)}
+        
 
       </div>
       

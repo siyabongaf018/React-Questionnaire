@@ -12,16 +12,17 @@ const DashBoard = () => {
     });
   }, []);
 
-  const totalQuestions = questionnaires.length;
-  const totalAgree = questionnaires.filter(
-    (q) => q.response === "agree"
-  ).length;
-  const totalNeutral = questionnaires.filter(
-    (q) => q.response === "neutral"
-  ).length;
-  const totalDisagree = questionnaires.filter(
-    (q) => q.response === "disagree"
-  ).length;
+  const data = [...questionnaires];
+  let totalAgree = 0;
+  let totalNeutral = 0;
+  let totalDisagree = 0;
+
+  data.map((item, index) => {
+    totalAgree += data[index].agree;
+    totalNeutral += data[index].neutral;
+    totalDisagree += data[index].disagree;
+  });
+  const totalQuestions = data.length;
 
   return (
     <div>

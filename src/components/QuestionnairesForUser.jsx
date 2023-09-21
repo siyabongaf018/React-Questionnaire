@@ -6,77 +6,64 @@ import { useNavigate } from "react-router-dom";
 
 const QuestionnairesForUser = () => {
   const [questionnaires, setQuestionnaires] = useState([]);
-  const [questionnaires2, setQuestionnaires2] = useState([]);
-
-  const navigate = useNavigate();
-
   const [responses, setResponses] = useState({}); // State to store user responses
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get("http://localhost:3000/questionnairesData").then((response) => {
       const questionnaire = response.data;
-      setQuestionnaires(response.data);
-      setQuestionnaires2(response.data);
-      setResponses(questionnaire);
-     // console.log("Fetched questionnaires:", questionnaire);
-
+      setQuestionnaires(questionnaire);
       if (questionnaire && questionnaire.question) {
-        setQuestionnaires(questionnaire.question);
-      //  console.log("Fetched questionnaires:", questionnaire.question);
+        console.log("Fetched questionnaires:", questionnaire.question);
       }
     });
   }, []);
 
   const handleResponse = (questionId, response) => {
-    // console.log(questionId);
+    // Get the previous response for this question
+    const previousResponse = responses[questionId];
 
-    let oldData = [...questionnaires2];
-    let newData = oldData[questionId];
-
-    newData.agree = 0;
-    newData.disagree = 0;
-    newData.neutral = 0;
-    if (response === "agree") {
-      newData.agree = 1;
-      // console.log(newData.agree + " response " + response);
-    } else if (response === "neutral") {
-      newData.neutral = 1;
-      // console.log(newData.neutral + " response " + response);
-    } else if (response === "disagree") {
-      newData.disagree = 1;
-      // console.log(newData.disagree + " response " + response);
+    // If a previous response exists, decrement it
+    if (previousResponse) {
+      setQuestionnaires((prevQuestionnaires) => {
+        return prevQuestionnaires.map((item, index) => {
+          if (index === questionId) {
+            return {
+              ...item,
+              [previousResponse]: item[previousResponse] - 1,
+              [response]: item[response] + 1,
+            };
+          }
+          return item;
+        });
+      });
+    } else {
+      // No previous response, just increment the new response
+      setQuestionnaires((prevQuestionnaires) => {
+        return prevQuestionnaires.map((item, index) => {
+          if (index === questionId) {
+            return {
+              ...item,
+              [response]: item[response] + 1,
+            };
+          }
+          return item;
+        });
+      });
     }
 
-    //assign the newdata wich is updated to the olddata.
-    oldData[questionId] = newData;
-
-    setQuestionnaires2(oldData);
-    setResponses({ ...responses, [questionId]: response });
+    // Update the response state
+    setResponses((prevResponses) => ({
+      ...prevResponses,
+      [questionId]: response,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    // 1. Calculate the new data for the questionnaire questions
-    const updatedData = questionnaires.map((item, index) => {
-      const newItem = questionnaires2[index]; // Use the index to access the corresponding item
-      if (newItem) {
-        return {
-          ...item,
-          agree: item.agree + newItem.agree,
-          neutral: item.neutral + newItem.neutral,
-          disagree: item.disagree + newItem.disagree,
-        };
-      }
-      return item;
-    });
-  
-    // 2. Update the local state with the new data
-    setQuestionnaires(updatedData);
-    console.log("data",questionnaires);
   
     try {
-      // 3. Send PUT requests to update the database for each question
       const promises = questionnaires.map(async (item, index) => {
         const questionData = {
           question: item.question,
@@ -85,7 +72,6 @@ const QuestionnairesForUser = () => {
           disagree: item.disagree,
         };
   
-        // Use the item's id for the PUT request URL
         const response = await axios.put(
           `http://localhost:3000/questionnairesData/${item.id}`,
           questionData
@@ -93,64 +79,22 @@ const QuestionnairesForUser = () => {
   
         console.log(`Question ${index} updated:`, response.data);
   
-        // Return the response so we can wait for all requests to complete
         return response;
       });
   
-      // Wait for all PUT requests to complete
       await Promise.all(promises);
   
       console.log("All questions updated successfully");
-  
-      // 4. Uncomment the following line to navigate after successful submission
-      // navigate("/");
+      navigate("/");
+   
     } catch (error) {
       console.error("Error updating questions:", error);
-      // Handle any errors that may occur during the database update here
+      
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   //updating the new data from the form with the precious data from the database
-  //   const updatedData = questionnaires.map((item) => {
-  //     const newItem = questionnaires2.find((newItem) => newItem.id === item.id);
-  //     if (newItem) {
-  //       return {
-  //         ...item,
-  //         agree: item.agree + newItem.agree,
-  //         neutral: item.neutral + newItem.neutral,
-  //         disagree: item.disagree + newItem.disagree,
-  //       };
-  //     }
-  //     return item;
-  //   });
-
-  //   setQuestionnaires(updatedData);
-  //   console.log(questionnaires);
-  //   let dataSet = [...questionnaires];
-
-  //   // going through the useState to update the database for all the values for the quiestions
-  //   questionnaires.map(async (item, index) => {
-  //     const quiestionData = {
-  //       question: item.question,
-  //       agree: parseInt(item.agree),
-  //       neutral: parseInt(item.neutral),
-  //       disagree: parseInt(item.disagree),
-  //     };
-
-  //     const response = await axios.put(
-  //       `http://localhost:3000/questionnairesData/${index}`,
-  //       quiestionData
-  //     );
-  //     console.log(response.data);
-
-  //     if (response.status === 200) {
-  //       // navigate("/");
-  //     }
-  //   });
-  // };
-
+  // navigate("/dashBoard");
+  
   return (
     <div>
       <Header />
@@ -161,14 +105,14 @@ const QuestionnairesForUser = () => {
             <div key={index}>
               <h3>{question.question}</h3>
               <div>
-                <label>Agree</label>{" "}
+                <label>Agree</label>
                 <input
                   type="radio"
                   name={`response_${index}`}
                   value="agree"
                   checked={responses[index] === "agree"}
                   onChange={() => handleResponse(index, "agree")}
-                />{" "}
+                />
                 <label>Neutral</label>
                 <input
                   type="radio"
@@ -176,7 +120,7 @@ const QuestionnairesForUser = () => {
                   value="neutral"
                   checked={responses[index] === "neutral"}
                   onChange={() => handleResponse(index, "neutral")}
-                />{" "}
+                />
                 <label>Disagree</label>
                 <input
                   type="radio"
@@ -184,7 +128,7 @@ const QuestionnairesForUser = () => {
                   value="disagree"
                   checked={responses[index] === "disagree"}
                   onChange={() => handleResponse(index, "disagree")}
-                />{" "}
+                />
               </div>
             </div>
           ))
