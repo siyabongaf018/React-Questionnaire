@@ -1,53 +1,25 @@
 {
   "questionnairesData": [
     {
-      "question": "sd",
-      "agree": 0,
-      "neutral": 0,
-      "disagree": 0,
+      "question": "coding is fun ?",
+      "agree": 1,
+      "neutral": 1,
+      "disagree": 1,
       "id": 1
     },
     {
-      "question": "zdfh",
-      "agree": 0,
-      "neutral": 0,
+      "question": "programming is easy",
+      "agree": 1,
+      "neutral": 2,
       "disagree": 0,
       "id": 2
     },
     {
-      "question": "zfdh",
+      "question": "change takes time?",
       "agree": 0,
-      "neutral": 0,
-      "disagree": 0,
+      "neutral": 1,
+      "disagree": 2,
       "id": 3
-    },
-    {
-      "question": "zdfh",
-      "agree": 0,
-      "neutral": 0,
-      "disagree": 0,
-      "id": 4
-    },
-    {
-      "question": "zdfh",
-      "agree": 0,
-      "neutral": 0,
-      "disagree": 0,
-      "id": 5
-    },
-    {
-      "question": "zfdhf",
-      "agree": 0,
-      "neutral": 0,
-      "disagree": 0,
-      "id": 6
-    },
-    {
-      "question": "zdfh",
-      "agree": 0,
-      "neutral": 0,
-      "disagree": 0,
-      "id": 7
     }
   ]
 }

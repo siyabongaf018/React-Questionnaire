@@ -3,11 +3,13 @@ import Header from "./Header";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./style.css";
 
 const QuestionnairesForUser = () => {
   const [questionnaires, setQuestionnaires] = useState([]);
   const [responses, setResponses] = useState({}); // State to store user responses
   const navigate = useNavigate();
+  const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
     axios.get("http://localhost:3000/questionnairesData").then((response) => {
@@ -18,6 +20,13 @@ const QuestionnairesForUser = () => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    // Check if responses are provided for all questions
+    const isValid = questionnaires.every((_, index) => !!responses[index]);
+    setIsFormValid(isValid);
+  }, [questionnaires, responses]);
+
 
   const handleResponse = (questionId, response) => {
     // Get the previous response for this question
@@ -57,6 +66,8 @@ const QuestionnairesForUser = () => {
       ...prevResponses,
       [questionId]: response,
     }));
+
+    
   };
 
   const handleSubmit = async (e) => {
@@ -93,52 +104,57 @@ const QuestionnairesForUser = () => {
     }
   };
 
-  // navigate("/dashBoard");
-  
+
   return (
     <div>
       <Header />
       <form onSubmit={handleSubmit}>
         <h3>Questionnaire</h3>
+        {!isFormValid && <p style={{color:"red"}}> Please provide responses to all questions.</p>}
         {questionnaires.length > 0 ? (
           questionnaires.map((question, index) => (
             <div key={index}>
-              <h3>{question.question}</h3>
-              <div>
-                <label>Agree</label>
-                <input
-                  type="radio"
-                  name={`response_${index}`}
-                  value="agree"
-                  checked={responses[index] === "agree"}
-                  onChange={() => handleResponse(index, "agree")}
-                />
-                <label>Neutral</label>
-                <input
-                  type="radio"
-                  name={`response_${index}`}
-                  value="neutral"
-                  checked={responses[index] === "neutral"}
-                  onChange={() => handleResponse(index, "neutral")}
-                />
-                <label>Disagree</label>
-                <input
-                  type="radio"
-                  name={`response_${index}`}
-                  value="disagree"
-                  checked={responses[index] === "disagree"}
-                  onChange={() => handleResponse(index, "disagree")}
-                />
+                <h3>{question.question}</h3>
+                <div>
+                  <label>Agree</label>
+                  <input
+                    type="radio"
+                    name={`response_${index}`}
+                    value="agree"
+                    checked={responses[index] === "agree"}
+                    onChange={() => handleResponse(index, "agree")}
+                  />
+                  <label>Neutral</label>
+                  <input
+                    type="radio"
+                    name={`response_${index}`}
+                    value="neutral"
+                    checked={responses[index] === "neutral"}
+                    onChange={() => handleResponse(index, "neutral")}
+                  />
+                  <label>Disagree</label>
+                  <input
+                    type="radio"
+                    name={`response_${index}`}
+                    value="disagree"
+                    checked={responses[index] === "disagree"}
+                    onChange={() => handleResponse(index, "disagree")}
+                  />
+                </div>
               </div>
-            </div>
           ))
         ) : (
-          <p>Loading...</p>
+          <p>No Question To Load...</p>
         )}
-        <button type="submit">Submit</button>
+        <button type="submit" className="btnSubmit" disabled={!isFormValid}>
+           <span>Submit </span>
+        </button>
       </form>
     </div>
   );
 };
+
+
+
 
 export default QuestionnairesForUser;
