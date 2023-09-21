@@ -1,9 +1,16 @@
 
 =>for axios and react router dom
 npm install axios json-server react-router-dom
+**import axios from "axios";
+**import { useNavigate } from "react-router-dom";
+
 
 =>for server 
 npm run server
 
 => to run the project 
 npm run dev
+
+=> for graph 
+npm install chart.js react-chartjs-2 
+** import { Bar } from "react-chartjs-2";
