@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ListOfQuestionnaires from "./ListOfQuestionnaires";
+import "./style.css";
 
 const Create = () => {
   const [question, setQuestion] = useState("");
@@ -26,16 +27,14 @@ const Create = () => {
     }
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-
-      const formData ={
-         question:question,
-          agree: 0,
-          neutral: 0,
-          disagree: 0,
+      const formData = {
+        question: question,
+        agree: 0,
+        neutral: 0,
+        disagree: 0,
       };
       const response = await axios.post(
         "http://localhost:3000/questionnairesData",
@@ -54,27 +53,34 @@ const Create = () => {
       <div className="Context">
         <h4>Create A Questionnaire</h4>
         <form onSubmit={handleSubmit}>
-          
-            <input
-              type="text"
-              style={{borderRadius:"5px",border:"1px solid blue", width:"200px" , height:"30px" }}
-              placeholder="Add Question"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              required
-            />
-          <br/>
-          <br/>
-          <button  style={{border:"1px solid blue" , color:"blue"}}
-            type="submit">Add</button>
+          <input
+            type="text"
+            style={{
+              borderRadius: "5px",
+              border: "1px solid blue",
+              width: "200px",
+              height: "30px",
+            }}
+            placeholder="Add Question"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            required
+          />
+          <br />
+          <br />
+          <button className="btnSubmit" type="submit">
+            <span>Add</span>
+          </button>
         </form>
         {questionnaires.length > 0 ? (
-          <ListOfQuestionnaires questionnaires={questionnaires} onDeleteMember={onDeleteMember} />
-        ):(<h2>No Questions</h2>)}
-        
-
+          <ListOfQuestionnaires
+            questionnaires={questionnaires}
+            onDeleteMember={onDeleteMember}
+          />
+        ) : (
+          <h2>No Questions</h2>
+        )}
       </div>
-      
     </div>
   );
 };
