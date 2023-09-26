@@ -51,14 +51,14 @@ const Create = () => {
     <div>
       <Header />
       <div className="Context">
-        <h4>Create A Questionnaire</h4>
+        <h2>Create A Questionnaire</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
             style={{
               borderRadius: "5px",
               border: "1px solid blue",
-              width: "200px",
+              width: "300px",
               height: "30px",
             }}
             placeholder="Add Question"
@@ -72,6 +72,7 @@ const Create = () => {
             <span>Add</span>
           </button>
         </form>
+        <hr/>
         {questionnaires.length > 0 ? (
           <ListOfQuestionnaires
             questionnaires={questionnaires}

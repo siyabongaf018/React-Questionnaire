@@ -2,24 +2,31 @@
   "questionnairesData": [
     {
       "question": "coding is fun ?",
-      "agree": 1,
-      "neutral": 1,
+      "agree": 2,
+      "neutral": 2,
       "disagree": 1,
       "id": 1
     },
     {
       "question": "programming is easy",
-      "agree": 1,
-      "neutral": 2,
+      "agree": 2,
+      "neutral": 3,
       "disagree": 0,
       "id": 2
     },
     {
       "question": "change takes time?",
-      "agree": 0,
-      "neutral": 1,
+      "agree": 1,
+      "neutral": 2,
       "disagree": 2,
       "id": 3
+    },
+    {
+      "question": "vusual studio code is the best ?",
+      "agree": 1,
+      "neutral": 1,
+      "disagree": 0,
+      "id": 4
     }
   ]
 }

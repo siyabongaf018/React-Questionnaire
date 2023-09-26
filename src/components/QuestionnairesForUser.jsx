@@ -22,17 +22,14 @@ const QuestionnairesForUser = () => {
   }, []);
 
   useEffect(() => {
-    // Check if responses are provided for all questions
     const isValid = questionnaires.every((_, index) => !!responses[index]);
     setIsFormValid(isValid);
   }, [questionnaires, responses]);
 
 
   const handleResponse = (questionId, response) => {
-    // Get the previous response for this question
     const previousResponse = responses[questionId];
 
-    // If a previous response exists, decrement it
     if (previousResponse) {
       setQuestionnaires((prevQuestionnaires) => {
         return prevQuestionnaires.map((item, index) => {
@@ -47,7 +44,6 @@ const QuestionnairesForUser = () => {
         });
       });
     } else {
-      // No previous response, just increment the new response
       setQuestionnaires((prevQuestionnaires) => {
         return prevQuestionnaires.map((item, index) => {
           if (index === questionId) {
@@ -61,7 +57,6 @@ const QuestionnairesForUser = () => {
       });
     }
 
-    // Update the response state
     setResponses((prevResponses) => ({
       ...prevResponses,
       [questionId]: response,
