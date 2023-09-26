@@ -2,10 +2,11 @@
     position: absolute;
   padding: 20px;
   top: 0;
-  left: 5rem;
+  left: 2px;
   text-align: left;
   min-width: 100%;
 height: auto;
+color:#213547;
 }
 
 .sidebar {
@@ -28,6 +29,8 @@ height: auto;
 
 .sidebar li {
   margin-bottom: 10px;
+  color: #213547;
+  font-size: 25px;
 }
 
 .sidebar li:hover {
@@ -81,4 +84,31 @@ height: auto;
 .btnSubmit:hover span:after {
   opacity: 1;
   right: 0;
+}
+.cards{
+  display:flex;
+ flex-direction: column;
+ justify-content: space-between;
+ padding: 8px 15px;
+ border-radius: 5px;
+  margin: 10px;
+  color: white;
+}
+.main-container{
+  display:flex;
+  flex-wrap: wrap;
+
+  justify-content: space-between;
+}
+.card__questions{
+  background-color: #2962ff;
+}
+.card__agree{
+  background-color: #1de416;
+}
+.card__neutral{
+  background-color: rgb(228, 188, 10);
+}
+.card__disagree{
+  background-color: red;
 }

@@ -6,7 +6,7 @@ const Header = () => {
     <div>
       <div className="logo">
         <NavLink to={{ pathname: `/` }}>
-          <h3>Logo</h3>
+          <h2 style={{color:"#213547"}}><span style={{color:"Green", fontSize:"30px"}}>💭Q</span>uestionnaire</h2>
         </NavLink>
       </div>
 
